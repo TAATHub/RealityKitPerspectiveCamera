@@ -2,23 +2,21 @@ import SwiftUI
 
 @main
 struct RealityKitPerspectiveCameraApp: App {
-
-    @State private var appModel = AppModel()
-
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(appModel)
+                .environment(AppModel.shared)
         }
+        .windowResizability(.contentSize)
 
-        ImmersiveSpace(id: appModel.immersiveSpaceID) {
+        ImmersiveSpace(id: AppModel.shared.immersiveSpaceID) {
             ImmersiveView()
-                .environment(appModel)
+                .environment(AppModel.shared)
                 .onAppear {
-                    appModel.immersiveSpaceState = .open
+                    AppModel.shared.immersiveSpaceState = .open
                 }
                 .onDisappear {
-                    appModel.immersiveSpaceState = .closed
+                    AppModel.shared.immersiveSpaceState = .closed
                 }
         }
         .immersionStyle(selection: .constant(.full), in: .full)

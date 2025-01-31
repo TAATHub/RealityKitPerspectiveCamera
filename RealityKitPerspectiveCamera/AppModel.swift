@@ -1,9 +1,14 @@
 import SwiftUI
+import RealityFoundation
 
-/// Maintains app-wide state
 @MainActor
 @Observable
 class AppModel {
+    static let shared = AppModel()
+    
+    var scene: Entity?
+    var cameraTransform: Transform?
+    
     let immersiveSpaceID = "ImmersiveSpace"
     enum ImmersiveSpaceState {
         case closed

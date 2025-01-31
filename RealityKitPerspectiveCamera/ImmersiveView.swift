@@ -3,21 +3,29 @@ import RealityKit
 import RealityKitContent
 
 struct ImmersiveView: View {
+    @Environment(AppModel.self) private var appModel
 
     var body: some View {
         RealityView { content in
-            // Add the initial RealityKit content
-            if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
-                content.add(immersiveContentEntity)
+            if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) {
+                content.add(scene)
+                
+                if let camera = scene.findEntity(named: "Camera") {
+                    camera.components.set(CameraComponent())
+                }
+                
+                guard let env = try? await EnvironmentResource(named: "Sunlight") else { return }
+                let iblComponent = ImageBasedLightComponent(source: .single(env), intensityExponent: 1.0)
+                scene.components[ImageBasedLightComponent.self] = iblComponent
+                scene.components.set(ImageBasedLightReceiverComponent(imageBasedLight: scene))
 
-                // Put skybox here.  See example in World project available at
-                // https://developer.apple.com/
+                appModel.scene = scene
             }
         }
     }
 }
 
-#Preview(immersionStyle: .full) {
+#Preview(immersionStyle: .mixed) {
     ImmersiveView()
         .environment(AppModel())
 }
