@@ -6,6 +6,8 @@ struct ToggleImmersiveSpaceButton: View {
 
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    
+    let onDismissImmersiveSpace: (() -> Void)?
 
     var body: some View {
         Button {
@@ -17,7 +19,7 @@ struct ToggleImmersiveSpaceButton: View {
                         // Don't set immersiveSpaceState to .closed because there
                         // are multiple paths to ImmersiveView.onDisappear().
                         // Only set .closed in ImmersiveView.onDisappear().
-
+                        onDismissImmersiveSpace?()
                     case .closed:
                         appModel.immersiveSpaceState = .inTransition
                         switch await openImmersiveSpace(id: appModel.immersiveSpaceID) {

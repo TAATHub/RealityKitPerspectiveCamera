@@ -9,15 +9,22 @@ struct ContentView: View {
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     
     @State var model: OffscreenRenderModel = .init()
+    @State private var tasks: Set<Task<Void, Never>> = []
     
-    private let timer = AsyncStream {
-        try? await Task.sleep(for: .seconds(0.01))
+    private var timer: AsyncStream<Void> {
+        AsyncStream {
+            try? await Task.sleep(for: .seconds(0.01))
+        }
     }
 
     var body: some View {
         VStack(spacing: 40) {
             renderedView()
-            ToggleImmersiveSpaceButton()
+            ToggleImmersiveSpaceButton {
+                tasks.forEach { task in
+                    task.cancel()
+                }
+            }
         }
         .padding(40)
         .frame(width: 800, height: 600)
@@ -40,7 +47,7 @@ struct ContentView: View {
             do {
                 try model.setup(scene: scene)
                 
-                Task {
+                let timerTask = Task {
                     await withTaskGroup(of: Void.self) { group in
                         for await _ in timer {
                             group.addTask { @MainActor in
@@ -51,6 +58,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                tasks.insert(timerTask)
             } catch {
                 // do nothing
             }
