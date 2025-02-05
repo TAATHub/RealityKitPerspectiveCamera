@@ -8,6 +8,7 @@ class AppModel {
     
     var scene: Entity?
     var cameraTransform: Transform?
+    var controlParameter: ControlParameter = .init()
     
     let immersiveSpaceID = "ImmersiveSpace"
     enum ImmersiveSpaceState {

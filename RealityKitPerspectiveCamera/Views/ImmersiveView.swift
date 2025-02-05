@@ -10,8 +10,8 @@ struct ImmersiveView: View {
             if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) {
                 content.add(scene)
                 
-                if let camera = scene.findEntity(named: "Camera") {
-                    camera.components.set(CameraComponent())
+                if let skybox = Entity.createSkybox(name: "Skybox") {
+                    scene.addChild(skybox)
                 }
                 
                 guard let env = try? await EnvironmentResource(named: "Sunlight") else { return }
@@ -20,6 +20,17 @@ struct ImmersiveView: View {
                 scene.components.set(ImageBasedLightReceiverComponent(imageBasedLight: scene))
 
                 appModel.scene = scene
+                
+                if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
+                    drone.position = [0, 1, -1]
+                    drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
+                    drone.components.set(DroneControlComponent())
+                    
+                    if let animation = drone.availableAnimations.last {
+                        drone.playAnimation(animation.repeat())
+                    }
+                    scene.addChild(drone)
+                }
             }
         }
     }
