@@ -31,7 +31,7 @@ final class OffscreenRenderModel {
         textureDesc.pixelFormat = .bgra8Unorm
         textureDesc.width = 1600
         textureDesc.height = 900
-        textureDesc.usage = [.renderTarget, .shaderRead]
+        textureDesc.usage = [.renderTarget, .shaderRead, .shaderWrite]
         
         let device = MTLCreateSystemDefaultDevice()!
         colorTexture = device.makeTexture(descriptor: textureDesc)!
