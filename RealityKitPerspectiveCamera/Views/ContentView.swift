@@ -49,11 +49,7 @@ struct ContentView: View {
                 .frame(width: 192)
             }
             
-            ToggleImmersiveSpaceButton {
-                tasks.forEach { task in
-                    task.cancel()
-                }
-            }
+            ToggleImmersiveSpaceButton()
         }
         .padding(40)
         .frame(width: 1200, height: 600)
