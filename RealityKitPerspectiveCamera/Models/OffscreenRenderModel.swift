@@ -13,7 +13,6 @@ final class OffscreenRenderModel {
     
     private var renderer: RealityRenderer?
     private var commandQueue: MTLCommandQueue?
-    private var colorTexture: MTLTexture?
     
     init() {
         lowLevelTexture = try? LowLevelTexture(descriptor: lowLevelTextureDescriptor)
@@ -26,8 +25,9 @@ final class OffscreenRenderModel {
         renderer = try RealityRenderer()
         guard let renderer else { return }
         
-        // If not clone entities in the scene, all entities in the immersive space will disapper when init this model.
-        // Discussing here: https://developer.apple.com/forums/thread/773957
+        // When the scene entity is added to RealityRenderer, it removes scene from the immersive space's content.
+        // So we have to clone the scene entity recursively.
+        // See this thread: https://developer.apple.com/forums/thread/773957
         renderer.entities.append(scene.clone(recursive: true))
         
         let camera = PerspectiveCamera()
@@ -43,6 +43,7 @@ final class OffscreenRenderModel {
         renderer.activeCamera?.setPosition(position, relativeTo: nil)
         renderer.activeCamera?.setOrientation(orientation, relativeTo: nil)
         
+        // Pass the colorTexture replaced from lowLevelTexture directly to RealityRenderer.CameraOutput
         let cameraOutputDesc = RealityRenderer.CameraOutput.Descriptor.singleProjection(colorTexture: colorTexture)
         let cameraOutput = try RealityRenderer.CameraOutput(cameraOutputDesc)
         try renderer.updateAndRender(deltaTime: 0.1, cameraOutput: cameraOutput)
@@ -52,6 +53,7 @@ final class OffscreenRenderModel {
         }
     }
     
+    // Descriptor for LowLevelTexture
     private var lowLevelTextureDescriptor: LowLevelTexture.Descriptor {
         var desc = LowLevelTexture.Descriptor()
 
@@ -64,7 +66,7 @@ final class OffscreenRenderModel {
 
         desc.mipmapLevelCount = 1
         desc.pixelFormat = .bgra8Unorm
-        desc.textureUsage = [.renderTarget]
+        desc.textureUsage = [.renderTarget] // Set the usage for rendering
         desc.swizzle = .init(red: .red, green: .green, blue: .blue, alpha: .alpha)
 
         return desc
