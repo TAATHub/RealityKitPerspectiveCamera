@@ -1,6 +1,6 @@
 import Observation
 import Metal
-import RealityFoundation
+import RealityKit
 import SwiftUI
 
 /// Model for rendering given scene using RealityRenderer

@@ -1,5 +1,5 @@
 import SwiftUI
-import RealityFoundation
+import RealityKit
 
 @MainActor
 @Observable

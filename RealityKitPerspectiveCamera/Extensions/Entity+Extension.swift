@@ -1,4 +1,4 @@
-import RealityFoundation
+import RealityKit
 
 extension Entity {
     static func createSkybox(name: String) -> Entity? {
