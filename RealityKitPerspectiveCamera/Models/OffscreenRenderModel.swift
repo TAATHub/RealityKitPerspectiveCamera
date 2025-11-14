@@ -28,7 +28,7 @@ final class OffscreenRenderModel {
         // When the scene entity is added to RealityRenderer, it removes scene from the immersive space's content.
         // So we have to clone the scene entity recursively.
         // See this thread: https://developer.apple.com/forums/thread/773957
-        renderer.entities.append(scene.clone(recursive: true))
+        renderer.entities.append(scene)
         
         let camera = PerspectiveCamera()
         renderer.activeCamera = camera

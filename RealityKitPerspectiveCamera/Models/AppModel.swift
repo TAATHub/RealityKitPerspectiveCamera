@@ -6,6 +6,7 @@ import RealityKit
 class AppModel {
     static let shared = AppModel()
     
+    var crystalCount: Int = 0
     var scene: Entity?
     var cameraTransform: Transform?
     var controlParameter: ControlParameter = .init()

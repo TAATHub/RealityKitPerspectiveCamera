@@ -7,9 +7,13 @@ struct ContentView: View {
     
     @Environment(\.openWindow) var openWindow
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
+    
+    @State private var count: Int = 0
 
     var body: some View {
         VStack(spacing: 40) {
+            Text("Crystal: \(count) / 10")
+            
             HStack(spacing: 40) {
                 VStack(spacing: 0) {
                     ControllerButton(imageName: "arrowtriangle.up.fill") {
@@ -53,6 +57,9 @@ struct ContentView: View {
         }
         .padding(40)
         .frame(width: 1200, height: 600)
+        .onChange(of: appModel.crystalCount) { _, newValue in
+            count = newValue
+        }
     }
 }
 
