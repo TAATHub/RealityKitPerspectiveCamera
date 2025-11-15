@@ -18,9 +18,12 @@ struct ImmersiveView: View {
                 let iblComponent = ImageBasedLightComponent(source: .single(env), intensityExponent: 1.0)
                 scene.components[ImageBasedLightComponent.self] = iblComponent
                 scene.components.set(ImageBasedLightReceiverComponent(imageBasedLight: scene))
-                
-                appModel.scene = scene.clone(recursive: true)
-                
+
+                if let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [.init(width: 1600, height: 900)]) {
+                    renderTextureScene.entities.append(scene.clone(recursive: true))
+                    appModel.renderTextureScene = renderTextureScene
+                }
+
                 if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
                     drone.position = [0, 1, -1]
                     drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
@@ -50,8 +53,12 @@ struct ImmersiveView: View {
     {
         event.entityB.removeFromParent()
         
-        if let entity = appModel.scene?.findEntity(named: event.entityB.name) {
-            entity.removeFromParent()
+        if let scene = appModel.renderTextureScene {
+            for entity in scene.entities {
+                if let target = entity.findEntity(named: event.entityB.name) {
+                    target.removeFromParent()
+                }
+            }
         }
         
         appModel.crystalCount += 1
@@ -60,5 +67,5 @@ struct ImmersiveView: View {
 
 #Preview(immersionStyle: .mixed) {
     ImmersiveView()
-        .environment(AppModel())
+        .environment(AppModel.shared)
 }
