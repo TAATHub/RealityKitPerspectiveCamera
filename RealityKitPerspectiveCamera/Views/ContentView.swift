@@ -56,7 +56,7 @@ struct ContentView: View {
             ToggleImmersiveSpaceButton()
         }
         .padding(40)
-        .frame(width: 1200, height: 600)
+        .frame(width: 1200, height: 800)
         .onChange(of: appModel.crystalCount) { _, newValue in
             count = newValue
         }

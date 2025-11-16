@@ -9,7 +9,7 @@ class AppModel {
     var crystalCount: Int = 0
 
     var renderTextureScene: RenderTextureScene?
-    var cameraTransform: Transform?
+    var droneCameraTransform: Transform?
 
     var controlParameter: ControlParameter = .init()
     

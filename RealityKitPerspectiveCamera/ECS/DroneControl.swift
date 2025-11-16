@@ -26,7 +26,19 @@ final class DroneControlSystem: System {
             let translation = entity.transform.matrix * SIMD4(localTranslation, 0)
             entity.transform.translation += translation.xyz
             
-            AppModel.shared.cameraTransform = entity.transform
+            AppModel.shared.droneCameraTransform = entity.transform            
+            updateDroneEntity(translation: entity.transform.translation, rotation: entity.transform.rotation)
+        }
+    }
+    
+    @MainActor
+    private func updateDroneEntity(translation: SIMD3<Float>, rotation: simd_quatf) {
+        guard let scene = AppModel.shared.renderTextureScene else { return }
+        for entity in scene.entities {
+            if let drone = entity.findEntity(named: "Drone") {
+                drone.transform.translation = translation
+                drone.transform.rotation = rotation
+            }
         }
     }
 }

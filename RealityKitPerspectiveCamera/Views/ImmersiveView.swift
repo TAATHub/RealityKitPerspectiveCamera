@@ -19,12 +19,25 @@ struct ImmersiveView: View {
                 scene.components[ImageBasedLightComponent.self] = iblComponent
                 scene.components.set(ImageBasedLightReceiverComponent(imageBasedLight: scene))
 
-                if let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [.init(width: 1600, height: 900)]) {
-                    renderTextureScene.entities.append(scene.clone(recursive: true))
+                if let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [.init(width: 1600, height: 900), .init(width: 1600, height: 900)]) {
+                    let clonedScene = scene.clone(recursive: true)
+                    
+                    if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
+                        drone.name = "Drone"
+                        drone.position = [0, 1, -1]
+                        drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
+                        if let animation = drone.availableAnimations.last {
+                            drone.playAnimation(animation.repeat())
+                        }
+                        clonedScene.addChild(drone)
+                    }
+                    
+                    renderTextureScene.entities.append(clonedScene)
                     appModel.renderTextureScene = renderTextureScene
                 }
 
                 if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
+                    drone.name = "Drone"
                     drone.position = [0, 1, -1]
                     drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
                     drone.components.set(DroneControlComponent())
