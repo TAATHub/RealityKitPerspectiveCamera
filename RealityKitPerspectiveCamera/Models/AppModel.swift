@@ -7,8 +7,10 @@ class AppModel {
     static let shared = AppModel()
     
     var crystalCount: Int = 0
-    var scene: Entity?
+
+    var renderTextureScene: RenderTextureScene?
     var cameraTransform: Transform?
+
     var controlParameter: ControlParameter = .init()
     
     let immersiveSpaceID = "ImmersiveSpace"
