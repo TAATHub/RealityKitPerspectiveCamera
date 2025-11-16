@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var count: Int = 0
 
     var body: some View {
-        VStack(spacing: 40) {
+        VStack {
             Text("Crystal: \(count) / 10")
             
             HStack(spacing: 40) {
@@ -52,11 +52,11 @@ struct ContentView: View {
                 }
                 .frame(width: 192)
             }
-            
+
             ToggleImmersiveSpaceButton()
+                .padding(.top, 16)
         }
         .padding(40)
-        .frame(width: 1200, height: 800)
         .onChange(of: appModel.crystalCount) { _, newValue in
             count = newValue
         }

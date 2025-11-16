@@ -18,6 +18,10 @@ struct ImmersiveView: View {
                 let iblComponent = ImageBasedLightComponent(source: .single(env), intensityExponent: 1.0)
                 scene.components[ImageBasedLightComponent.self] = iblComponent
                 scene.components.set(ImageBasedLightReceiverComponent(imageBasedLight: scene))
+                
+                let skyCameraEntity = Entity()
+                skyCameraEntity.components.set(SkyCameraComponent())
+                scene.addChild(skyCameraEntity)
 
                 if let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [.init(width: 1600, height: 900), .init(width: 1600, height: 900)]) {
                     let clonedScene = scene.clone(recursive: true)
@@ -56,6 +60,10 @@ struct ImmersiveView: View {
                     
                     _ = content.subscribe(to: CollisionEvents.Began.self, on: drone, handleCollision(_:))
                 }
+                
+                let renderTextureEntity = Entity()
+                renderTextureEntity.components.set(RenderTextureComponent())
+                scene.addChild(renderTextureEntity)
             }
             
             appModel.crystalCount = 0
