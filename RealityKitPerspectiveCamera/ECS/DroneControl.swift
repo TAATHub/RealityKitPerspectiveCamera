@@ -8,7 +8,7 @@ struct DroneControlComponent: Component {
 
 final class DroneControlSystem: System {
     private let query = EntityQuery(where: .has(DroneControlComponent.self))
-    private let speed = 1.0
+    private let speed = 2.0
     
     init(scene: Scene) {}
     

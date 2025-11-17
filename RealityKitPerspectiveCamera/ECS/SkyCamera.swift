@@ -14,6 +14,9 @@ final class SkyCameraSystem: System {
         deltaTime * 0.1
     }
     
+    private let radius: Double = 5.0
+    private let centerPosition: SIMD3<Float> = .init(0, 3.0, -52.0)
+    
     init(scene: Scene) {}
     
     func update(context: SceneUpdateContext) {
@@ -21,16 +24,16 @@ final class SkyCameraSystem: System {
         
         let entities = context.entities(matching: query, updatingSystemWhen: .rendering)
         for entity in entities {
-            let x = cos(angle) * 5
-            let y = 3.0
-            let z = sin(angle) * 5 - 20
+            let x = cos(angle) * radius
+            let y = centerPosition.y
+            let z = sin(angle) * radius + Double(centerPosition.z)
             entity.transform.translation = .init(Float(x), Float(y), Float(z))
             
 //            let yaw = simd_quatf(angle: -Float(angle), axis: .upward)
 //            let roll = simd_quatf(angle: -.pi/6, axis: .forward)
 //            let pitch = simd_quatf(angle: .pi/6, axis: .right)
 //            entity.transform.rotation = yaw * pitch
-            entity.look(at: .init(0, 2.5, -20), from: entity.transform.translation, relativeTo: nil)
+            entity.look(at: centerPosition + .init(0, -0.5, 0), from: entity.transform.translation, relativeTo: nil)
             
             AppModel.shared.skyCameraTransform = entity.transform
         }
