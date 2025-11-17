@@ -26,7 +26,6 @@ def Xform "Root"
     }
 
     def "Low_Poly_Nature" (
-        active = true
         customData = {
             float3 rotationEulerHint = (0, 1.5707963, 0)
         }
@@ -37,6 +36,15 @@ def Xform "Root"
         float3 xformOp:scale = (0.5, 0.5, 0.5)
         float3 xformOp:translate = (32.79717, -136.3, -14.06719)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Materials"
+        {
+            over "Mountain"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+            }
+        }
     }
 
     def Xform "Crystals" (
@@ -528,6 +536,26 @@ def Xform "Root"
                         float3 position = (0.84225035, 15.76475, -1.5487494)
                     }
                 }
+            }
+        }
+    }
+
+    def Xform "DirectionalLight" (
+        customData = {
+            float3 rotationEulerHint = (-1.0471976, -4.2424862e-8, 1.7603938e-8)
+        }
+    )
+    {
+        quatf xformOp:orient = (0.8660254, -0.5, -2.2771488e-8, -2.9834868e-9)
+        float3 xformOp:translate = (0, 100, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "DirectionalLight"
+        {
+            token info:id = "RealityKit.DirectionalLight"
+
+            def RealityKitStruct "Shadow"
+            {
             }
         }
     }

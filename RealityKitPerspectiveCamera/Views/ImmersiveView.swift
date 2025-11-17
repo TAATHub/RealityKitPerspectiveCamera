@@ -14,11 +14,6 @@ struct ImmersiveView: View {
                     scene.addChild(skybox)
                 }
                 
-                guard let env = try? await EnvironmentResource(named: "Sunlight") else { return }
-                let iblComponent = ImageBasedLightComponent(source: .single(env), intensityExponent: 1.0)
-                scene.components[ImageBasedLightComponent.self] = iblComponent
-                scene.components.set(ImageBasedLightReceiverComponent(imageBasedLight: scene))
-                
                 let skyCameraEntity = Entity()
                 skyCameraEntity.components.set(SkyCameraComponent())
                 scene.addChild(skyCameraEntity)
