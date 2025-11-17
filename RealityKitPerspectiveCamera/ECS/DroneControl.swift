@@ -8,7 +8,8 @@ struct DroneControlComponent: Component {
 
 final class DroneControlSystem: System {
     private let query = EntityQuery(where: .has(DroneControlComponent.self))
-    private let speed = 2.0
+    private let moveSpeed = 500.0
+    private let rotationSpeed = 2.0
     
     init(scene: Scene) {}
     
@@ -16,13 +17,13 @@ final class DroneControlSystem: System {
         let entities = context.entities(matching: query, updatingSystemWhen: .rendering)
         for entity in entities {
             var rotation = entity.transform.rotation
-            rotation *= simd_quatf(angle: Float(AppModel.shared.controlParameter.rotation * context.deltaTime * speed),
+            rotation *= simd_quatf(angle: Float(AppModel.shared.controlParameter.rotation * context.deltaTime * rotationSpeed),
                                    axis: .init(x: 0, y: 1, z: 0))
             entity.transform.rotation = rotation
 
             let localTranslation = SIMD3(x: 0,
-                                    y: Float(AppModel.shared.controlParameter.up * context.deltaTime * speed),
-                                    z: Float(AppModel.shared.controlParameter.forward * context.deltaTime * speed))
+                                    y: Float(AppModel.shared.controlParameter.up * context.deltaTime * moveSpeed),
+                                         z: Float(AppModel.shared.controlParameter.forward * context.deltaTime * moveSpeed))
             let translation = entity.transform.matrix * SIMD4(localTranslation, 0)
             entity.transform.translation += translation.xyz
             

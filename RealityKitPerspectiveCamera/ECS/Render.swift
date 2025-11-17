@@ -27,7 +27,7 @@ final class RenderTextureSystem: System {
             switch index {
             case 0:
                 if let transform = AppModel.shared.droneCameraTransform {
-                    camera.position = transform.translation
+                    camera.position = transform.translation + (transform.matrix * SIMD4(SIMD3<Float>(0, 0, 50), 0)).xyz
                     camera.orientation = transform.rotation * simd_quatf(angle: -.pi, axis: .init(x: 0, y: 1, z: 0))
                 }
             case 1:

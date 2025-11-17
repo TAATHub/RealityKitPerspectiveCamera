@@ -21,9 +21,10 @@ struct ImmersiveView: View {
                 if let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [.init(width: 1600, height: 900), .init(width: 1600, height: 900)]) {
                     let clonedScene = scene.clone(recursive: true)
                     
-                    if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
+                    if let drone = try? await Entity(named: "Police_Drone", in: realityKitContentBundle) {
                         drone.name = "Drone"
                         drone.position = [0, 1, -1]
+                        drone.scale *= 0.5
                         drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
                         if let animation = drone.availableAnimations.last {
                             drone.playAnimation(animation.repeat())
@@ -35,18 +36,13 @@ struct ImmersiveView: View {
                     appModel.renderTextureScene = renderTextureScene
                 }
 
-                if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
+                if let drone = try? await Entity(named: "Police_Drone", in: realityKitContentBundle) {
                     drone.name = "Drone"
                     drone.position = [0, 1, -1]
+                    drone.scale *= 0.5
                     drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
                     drone.components.set(DroneControlComponent())
-                    drone.components.set(CollisionComponent(shapes: [.generateBox(size: .init(0.2, 0.1, 0.2))]))
-                    
-                    var physicsBody = PhysicsBodyComponent(mode: .dynamic)
-                    physicsBody.isAffectedByGravity = false
-                    physicsBody.linearDamping = 0.1
-                    physicsBody.massProperties.mass = 0.8
-                    drone.components.set(physicsBody)
+                    drone.components.set(CollisionComponent(shapes: [.generateBox(size: .init(150, 150, 200)).offsetBy(translation: [0, 60, 0])]))
                     
                     if let animation = drone.availableAnimations.last {
                         drone.playAnimation(animation.repeat())
