@@ -10,39 +10,91 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Camera", "Low_Poly_Nature", "Crystal1", "Crystal2", "Crystal1", "Crystals"]
-    def "Camera" (
-        active = false
-        customData = {
-            float3 rotationEulerHint = (0, 3.1415927, 0)
-        }
-        references = @DslrCamera.usdz@
+    reorder nameChildren = ["Crystals", "Lights", "Camera_1", "Cameras", "Diorama__Level_Design", "Origin"]
+    def "Diorama__Level_Design" (
+        active = true
+        references = @Diorama__Level_Design.usdz@
     )
     {
-        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-        float3 xformOp:scale = (10, 10, 10)
-        float3 xformOp:translate = (0.0000018514693, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (23, -17.6, -32)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
-    def "Low_Poly_Nature" (
-        customData = {
-            float3 rotationEulerHint = (0, 1.5707963, 0)
-        }
-        references = @Low_Poly_Nature.usdz@
+    def Sphere "Origin" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
-        quatf xformOp:orient = (0.70710677, 0, 0.70710677, 0)
-        float3 xformOp:scale = (0.5, 0.5, 0.5)
-        float3 xformOp:translate = (32.79717, -136.3, -14.06719)
+        rel material:binding = </Root/Origin/DefaultMaterial>
+        double radius = 1
+        float3 xformOp:translate = (0, 1, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-        over "Materials"
+        def Material "DefaultMaterial"
         {
-            over "Mountain"
+            token outputs:mtlx:surface
+            token outputs:realitykit:vertex
+            token outputs:surface.connect = </Root/Origin/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
             {
-                token outputs:mtlx:surface
-                token outputs:realitykit:vertex
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0.14913142, 0) (
+                    colorSpace = "srgb_texture"
+                )
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def Xform "Lights" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["DirectionalLight_1", "DirectionalLight_2"]
+        def Xform "DirectionalLight_1" (
+            customData = {
+                float3 rotationEulerHint = (-0.78539807, -5.781771e-8, 2.2168054e-8)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.92387956, -0.38268334, -3.0949963e-8, -8.2263246e-10)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-4.444023e-7, 50, -25)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "DirectionalLight"
+            {
+                token info:id = "RealityKit.DirectionalLight"
+
+                def RealityKitStruct "Shadow"
+                {
+                }
+            }
+        }
+
+        def Xform "DirectionalLight_2" (
+            customData = {
+                float3 rotationEulerHint = (3.9269898, -0.7853981, -4.2146844e-8)
+            }
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (-0.35355294, 0.8535536, 0.14644639, 0.35355344)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (50, 50, -50)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "DirectionalLight"
+            {
+                token info:id = "RealityKit.DirectionalLight"
+
+                def RealityKitStruct "Shadow"
+                {
+                }
             }
         }
     }
@@ -51,32 +103,17 @@ def Xform "Root"
         active = true
     )
     {
-        def "Crystal" (
+        reorder nameChildren = ["Crystal_1", "Crystal_10"]
+        def "Crystal_10" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (6.104357, -0.7875576, -3.9984019)
+            reorder nameChildren = ["Materials", "Meshes", "Collider"]
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (40.86501, -2.214731, -53.5381)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -87,12 +124,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -100,32 +137,15 @@ def Xform "Root"
 
         def "Crystal_1" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (20, 20)
             int ui:nodegraph:node:stackingOrder = 1
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (24.785795, 1.2658918, -12.325692)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (14.036206, -2.010371, -4.6721115)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -136,12 +156,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -149,32 +169,15 @@ def Xform "Root"
 
         def "Crystal_2" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (40, 40)
             int ui:nodegraph:node:stackingOrder = 2
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (11.744549, 1.2658918, -20.031578)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (1.6491746, 3.3491428, -58.846092)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -185,12 +188,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -198,32 +201,15 @@ def Xform "Root"
 
         def "Crystal_3" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (60, 60)
             int ui:nodegraph:node:stackingOrder = 3
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (-32.51345, 1.9489212, -56.273857)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (13.167207, -6.8505254, -73.85383)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -234,12 +220,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -247,32 +233,15 @@ def Xform "Root"
 
         def "Crystal_4" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (80, 80)
             int ui:nodegraph:node:stackingOrder = 4
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (9.385892, -5.728157, -52.906834)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (21.976921, -8.355783, -55.611362)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -283,12 +252,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -296,32 +265,15 @@ def Xform "Root"
 
         def "Crystal_5" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (100, 100)
             int ui:nodegraph:node:stackingOrder = 5
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (-44.661728, 2.736269, -26.446629)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (25.44148, -15.992631, -18.846323)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -332,12 +284,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -345,32 +297,15 @@ def Xform "Root"
 
         def "Crystal_6" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (120, 120)
             int ui:nodegraph:node:stackingOrder = 6
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (-62.102394, -0.6353073, -57.452927)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (0.48729163, -9.234792, -29.172024)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -381,12 +316,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -394,32 +329,15 @@ def Xform "Root"
 
         def "Crystal_7" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
             float2 ui:nodegraph:node:pos = (140, 140)
             int ui:nodegraph:node:stackingOrder = 7
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (-45.69699, 50.954338, -12.425741)
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (1.9676316, -2.4865227, -10.638607)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -430,12 +348,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -443,32 +361,15 @@ def Xform "Root"
 
         def "Crystal_8" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
-            float2 ui:nodegraph:node:pos = (160, 160)
-            int ui:nodegraph:node:stackingOrder = 8
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (-19.196064, 0.15328646, -21.581278)
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (-0.9505515, 47.053497, 8.494734)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -479,12 +380,12 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
@@ -492,32 +393,15 @@ def Xform "Root"
 
         def "Crystal_9" (
             active = true
-            references = @Low_Poly_Crystal.usdz@
+            references = @Glowing_crystals.usdz@
         )
         {
-            float2 ui:nodegraph:node:pos = (180, 180)
-            int ui:nodegraph:node:stackingOrder = 9
-            quatf xformOp:orient = (0.99999994, 0, 0, 0)
-            float3 xformOp:scale = (0.049999993, 0.049999993, 0.049999993)
-            float3 xformOp:translate = (19.949566, 0.15328646, -76.50043)
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.005, 0.005, 0.005)
+            float3 xformOp:translate = (62.20944, -15.313757, 1.6462184)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "RigidBody"
-            {
-                bool gravityEnabled = 0
-                uniform token info:id = "RealityKit.RigidBody"
-
-                def RealityKitStruct "massFrame"
-                {
-                    def RealityKitStruct "m_pose"
-                    {
-                    }
-                }
-
-                def RealityKitStruct "material"
-                {
-                }
-            }
 
             def RealityKitComponent "Collider"
             {
@@ -528,35 +412,31 @@ def Xform "Root"
 
                 def RealityKitStruct "Shape"
                 {
-                    float3 extent = (28.302502, 31.4235, 29.2967)
+                    float3 extent = (242.88428, 299.99997, 290.6214)
                     token shapeType = "Box"
 
                     def RealityKitStruct "pose"
                     {
-                        float3 position = (0.84225035, 15.76475, -1.5487494)
+                        float3 position = (-9.780125, 99.83313, 0.50684357)
                     }
                 }
             }
         }
     }
 
-    def Xform "DirectionalLight" (
-        customData = {
-            float3 rotationEulerHint = (-1.0471976, -4.2424862e-8, 1.7603938e-8)
-        }
+    def Xform "Cameras" (
+        active = true
     )
     {
-        quatf xformOp:orient = (0.8660254, -0.5, -2.2771488e-8, -2.9834868e-9)
-        float3 xformOp:translate = (0, 100, 0)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def RealityKitComponent "DirectionalLight"
+        def "Camera_1" (
+            active = true
+            references = @DslrCamera.usdz@
+        )
         {
-            token info:id = "RealityKit.DirectionalLight"
-
-            def RealityKitStruct "Shadow"
-            {
-            }
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (4, 4, 4)
+            float3 xformOp:translate = (40, 1, -55)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
     }
 }
