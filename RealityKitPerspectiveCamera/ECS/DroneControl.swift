@@ -8,7 +8,7 @@ struct DroneControlComponent: Component {
 
 final class DroneControlSystem: System {
     private let query = EntityQuery(where: .has(DroneControlComponent.self))
-    private let moveSpeed = 500.0
+    private let moveSpeed = 5.0
     private let rotationSpeed = 2.0
     
     init(scene: Scene) {}
@@ -27,7 +27,10 @@ final class DroneControlSystem: System {
             let translation = entity.transform.matrix * SIMD4(localTranslation, 0)
             entity.transform.translation += translation.xyz
             
-            AppModel.shared.droneCameraTransform = entity.transform            
+            if let droneCamera = entity.findEntity(named: "DroneCamera") {
+                AppModel.shared.droneCameraTransform.translation = droneCamera.position(relativeTo: nil)
+                AppModel.shared.droneCameraTransform.rotation = entity.transform.rotation.reversed(around: .upward)
+            }
             updateDroneEntity(translation: entity.transform.translation, rotation: entity.transform.rotation)
         }
     }
