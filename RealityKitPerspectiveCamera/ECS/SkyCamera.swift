@@ -15,7 +15,7 @@ final class SkyCameraSystem: System {
     }
     
     private let radius: Double = 5.0
-    private let centerPosition: SIMD3<Float> = .init(0, 3.0, -52.0)
+    private let centerPosition: SIMD3<Float> = .init(40, 3.0, -55) // TODO: Get position from entity in the scene
     
     init(scene: Scene) {}
     
@@ -24,7 +24,7 @@ final class SkyCameraSystem: System {
         
         let entities = context.entities(matching: query, updatingSystemWhen: .rendering)
         for entity in entities {
-            let x = cos(angle) * radius
+            let x = cos(angle) * radius + Double(centerPosition.x)
             let y = centerPosition.y
             let z = sin(angle) * radius + Double(centerPosition.z)
             entity.transform.translation = .init(Float(x), Float(y), Float(z))
@@ -33,7 +33,7 @@ final class SkyCameraSystem: System {
 //            let roll = simd_quatf(angle: -.pi/6, axis: .forward)
 //            let pitch = simd_quatf(angle: .pi/6, axis: .right)
 //            entity.transform.rotation = yaw * pitch
-            entity.look(at: centerPosition + .init(0, -0.5, 0), from: entity.transform.translation, relativeTo: nil)
+            entity.look(at: centerPosition + .init(0, -3, 0), from: entity.transform.translation, relativeTo: nil)
             
             AppModel.shared.skyCameraTransform = entity.transform
         }

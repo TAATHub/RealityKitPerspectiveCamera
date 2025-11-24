@@ -18,3 +18,9 @@ extension Entity {
         }
     }
 }
+
+extension simd_quatf {
+    func reversed(around axis: SIMD3<Float> = .upward) -> simd_quatf {
+        return self * simd_quatf(angle: -.pi, axis: axis)
+    }
+}
