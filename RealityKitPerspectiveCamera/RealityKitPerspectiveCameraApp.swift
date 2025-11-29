@@ -10,6 +10,7 @@ struct RealityKitPerspectiveCameraApp: App {
         .windowResizability(.contentSize)
 
         ImmersiveSpace(id: AppModel.shared.immersiveSpaceID) {
+            // Change to SampleImmersiveView() to check immersive view with sample scenes.
             ImmersiveView()
                 .environment(AppModel.shared)
                 .onAppear {

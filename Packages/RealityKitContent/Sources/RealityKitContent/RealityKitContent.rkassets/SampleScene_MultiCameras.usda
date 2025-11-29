@@ -1,0 +1,427 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (494.40.1)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["SkyDome", "Cameras", "Robot", "_Robots", "DirectionalLight"]
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def "SkyDome" (
+        references = @SkyDome.usdz@
+    )
+    {
+        reorder nameChildren = ["Dome_01", "Ground_01", "Grid", "Looks"]
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "DirectionalLight" (
+        customData = {
+            float3 rotationEulerHint = (-0.78539807, 2.5331974e-7, 0.78539795)
+        }
+    )
+    {
+        quatf xformOp:orient = (0.8535534, -0.35355338, -0.14644644, 0.35355335)
+        float3 xformOp:translate = (-5, 10, 10)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "DirectionalLight"
+        {
+            token info:id = "RealityKit.DirectionalLight"
+            float intensity = 4000
+
+            def RealityKitStruct "Shadow"
+            {
+                bool isEnabled = 0
+            }
+        }
+    }
+
+    def "Robot" (
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
+        references = @Robot.usdz@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (5, 5, 5)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "Cameras" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["Camera_1", "Camera_2"]
+        def Xform "Camera_1" (
+            customData = {
+                float3 rotationEulerHint = (0.34906578, 2.3561945, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["DslrCamera", "CameraCoordinate", "Origin", "Axis_X", "Axis_Y", "Axis_Z"]
+            quatf xformOp:orient = (0.37686956, 0.06645226, 0.90984374, -0.16042994)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.9999999)
+            float3 xformOp:translate = (-1, 1.2, 1)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "DslrCamera" (
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+                references = @DslrCamera.usdz@
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (4, 3.9999998, 4)
+                float3 xformOp:translate = (-0.10209203, -0.2056709, -0.39092755)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "CameraCoordinate" (
+                active = false
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+            )
+            {
+                reorder nameChildren = ["Origin", "Axis_X", "Axis_Y", "Axis_Z"]
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1.0000001, 1.0000001, 1.0000001)
+                float3 xformOp:translate = (-3.0033016e-7, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "Origin" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (0, 0, 0)
+                    }
+                )
+                {
+                    reorder nameChildren = ["Cylinder", "DefaultMaterial"]
+                    rel material:binding = </Root/Camera/CameraCoordinate/Origin/DefaultMaterial>
+                    double radius = 0.1
+                    quatf xformOp:orient = (1, 4.6708566e-9, 8.643777e-9, 3.5782877e-9)
+                    float3 xformOp:scale = (0.99999994, 0.9999999, 1)
+                    float3 xformOp:translate = (3.583065e-7, -5.9604645e-8, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Origin/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 1, 1)
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cylinder "Axis_X" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (0, 0, 1.5707964)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 0.2
+                    rel material:binding = </Root/Camera/CameraCoordinate/Axis_X/DefaultMaterial>
+                    double radius = 0.1
+                    quatf xformOp:orient = (0.70710677, 6.7371575e-9, -8.6548315e-9, 0.70710677)
+                    float3 xformOp:scale = (0.09999998, 3.9999993, 0.09999999)
+                    float3 xformOp:translate = (0.4000003, -5.9604645e-8, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:mtlx:surface
+                        token outputs:realitykit:vertex
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Axis_X/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 0.14913142, 0) (
+                                colorSpace = "srgb_texture"
+                            )
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cylinder "Axis_Y" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (0, 6.689987e-8, -6.089849e-9)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 0.2
+                    rel material:binding = </Root/Camera/CameraCoordinate/Axis_Y/DefaultMaterial>
+                    double radius = 0.1
+                    float2 ui:nodegraph:node:pos = (20, 20)
+                    int ui:nodegraph:node:stackingOrder = 1
+                    quatf xformOp:orient = (1, 4.6708557e-9, -7.48273e-9, 3.5175258e-9)
+                    float3 xformOp:scale = (0.099999994, 3.9999995, 0.09999999)
+                    float3 xformOp:translate = (-2.271809e-8, 0.39999986, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:mtlx:surface
+                        token outputs:realitykit:vertex
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Axis_Y/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (0, 0.97680455, 0) (
+                                colorSpace = "srgb_texture"
+                            )
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cylinder "Axis_Z" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (1.5707964, 7.915334e-8, 0)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 0.2
+                    rel material:binding = </Root/Camera/CameraCoordinate/Axis_Z/DefaultMaterial>
+                    double radius = 0.1
+                    float2 ui:nodegraph:node:pos = (40, 40)
+                    int ui:nodegraph:node:stackingOrder = 2
+                    quatf xformOp:orient = (0.70710677, 0.7071067, 4.580301e-8, -3.9969176e-8)
+                    float3 xformOp:scale = (0.09999998, 3.9999993, 0.09999996)
+                    float3 xformOp:translate = (3.4151586e-7, -5.9604645e-8, 0.39999998)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:mtlx:surface
+                        token outputs:realitykit:vertex
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Axis_Z/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (0.016804177, 0.198351, 1) (
+                                colorSpace = "srgb_texture"
+                            )
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+            }
+        }
+
+        def Xform "Camera_2" (
+            customData = {
+                float3 rotationEulerHint = (0.34906578, -2.3561945, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["DslrCamera", "CameraCoordinate", "Origin", "Axis_X", "Axis_Y", "Axis_Z"]
+            float2 ui:nodegraph:node:pos = (3054.7473, 601.66156)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (-0.37686956, -0.06645226, 0.90984374, -0.16042994)
+            float3 xformOp:scale = (0.9999997, 0.9999997, 0.9999996)
+            float3 xformOp:translate = (1, 1.2, 1)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "DslrCamera" (
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+                references = @DslrCamera.usdz@
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (4, 3.9999998, 4)
+                float3 xformOp:translate = (-0.10209203, -0.2056709, -0.39092755)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Xform "CameraCoordinate" (
+                active = false
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+            )
+            {
+                reorder nameChildren = ["Origin", "Axis_X", "Axis_Y", "Axis_Z"]
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1.0000001, 1.0000001, 1.0000001)
+                float3 xformOp:translate = (-3.0033016e-7, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "Origin" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (0, 0, 0)
+                    }
+                )
+                {
+                    reorder nameChildren = ["Cylinder", "DefaultMaterial"]
+                    rel material:binding = </Root/Camera/CameraCoordinate/Origin/DefaultMaterial>
+                    double radius = 0.1
+                    quatf xformOp:orient = (1, 4.6708566e-9, 8.643777e-9, 3.5782877e-9)
+                    float3 xformOp:scale = (0.99999994, 0.9999999, 1)
+                    float3 xformOp:translate = (3.583065e-7, -5.9604645e-8, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Origin/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 1, 1)
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cylinder "Axis_X" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (0, 0, 1.5707964)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 0.2
+                    rel material:binding = </Root/Camera/CameraCoordinate/Axis_X/DefaultMaterial>
+                    double radius = 0.1
+                    quatf xformOp:orient = (0.70710677, 6.7371575e-9, -8.6548315e-9, 0.70710677)
+                    float3 xformOp:scale = (0.09999998, 3.9999993, 0.09999999)
+                    float3 xformOp:translate = (0.4000003, -5.9604645e-8, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:mtlx:surface
+                        token outputs:realitykit:vertex
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Axis_X/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 0.14913142, 0) (
+                                colorSpace = "srgb_texture"
+                            )
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cylinder "Axis_Y" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (0, 6.689987e-8, -6.089849e-9)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 0.2
+                    rel material:binding = </Root/Camera/CameraCoordinate/Axis_Y/DefaultMaterial>
+                    double radius = 0.1
+                    float2 ui:nodegraph:node:pos = (20, 20)
+                    int ui:nodegraph:node:stackingOrder = 1
+                    quatf xformOp:orient = (1, 4.6708557e-9, -7.48273e-9, 3.5175258e-9)
+                    float3 xformOp:scale = (0.099999994, 3.9999995, 0.09999999)
+                    float3 xformOp:translate = (-2.271809e-8, 0.39999986, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:mtlx:surface
+                        token outputs:realitykit:vertex
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Axis_Y/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (0, 0.97680455, 0) (
+                                colorSpace = "srgb_texture"
+                            )
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cylinder "Axis_Z" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (1.5707964, 7.915334e-8, 0)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 0.2
+                    rel material:binding = </Root/Camera/CameraCoordinate/Axis_Z/DefaultMaterial>
+                    double radius = 0.1
+                    float2 ui:nodegraph:node:pos = (40, 40)
+                    int ui:nodegraph:node:stackingOrder = 2
+                    quatf xformOp:orient = (0.70710677, 0.7071067, 4.580301e-8, -3.9969176e-8)
+                    float3 xformOp:scale = (0.09999998, 3.9999993, 0.09999996)
+                    float3 xformOp:translate = (3.4151586e-7, -5.9604645e-8, 0.39999998)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:mtlx:surface
+                        token outputs:realitykit:vertex
+                        token outputs:surface.connect = </Root/Camera/CameraCoordinate/Axis_Z/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (0.016804177, 0.198351, 1) (
+                                colorSpace = "srgb_texture"
+                            )
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

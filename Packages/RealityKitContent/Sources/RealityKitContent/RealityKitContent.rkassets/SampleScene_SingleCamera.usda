@@ -1,0 +1,222 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (494.40.1)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["SkyDome", "Cameras", "Robot", "_Robots", "DirectionalLight"]
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def "SkyDome" (
+        references = @SkyDome.usdz@
+    )
+    {
+        reorder nameChildren = ["Dome_01", "Ground_01", "Grid", "Looks"]
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "DirectionalLight" (
+        customData = {
+            float3 rotationEulerHint = (-0.78539807, 2.5331974e-7, 0.78539795)
+        }
+    )
+    {
+        quatf xformOp:orient = (0.8535534, -0.35355338, -0.14644644, 0.35355335)
+        float3 xformOp:translate = (-5, 10, 10)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "DirectionalLight"
+        {
+            token info:id = "RealityKit.DirectionalLight"
+            float intensity = 4000
+
+            def RealityKitStruct "Shadow"
+            {
+                bool isEnabled = 0
+            }
+        }
+    }
+
+    def "Robot" (
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
+        references = @Robot.usdz@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (5, 5, 5)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "_Robots" (
+        active = false
+    )
+    {
+        reorder nameChildren = ["_Robot", "_Robot_1"]
+        def "_Robot" (
+            references = @Robot.usdz@
+        )
+        {
+            float3 xformOp:scale = (5, 5, 5)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "geom"
+            {
+                over "realistic"
+                {
+                    over "materials"
+                    {
+                        over "robot_realistic"
+                        {
+                            string inputs:pasted__file6:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (125.5, 1250)
+                                    }
+                                }
+                            )
+                            string inputs:pasted__file7:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (394.5, 1250)
+                                    }
+                                }
+                            )
+                            string inputs:pasted__file8:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (665.5, 1250)
+                                    }
+                                }
+                            )
+                            string inputs:pasted__file9:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (936.5, 1250)
+                                    }
+                                }
+                            )
+                            string inputs:pasted__file10:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (1213.5, 1250)
+                                    }
+                                }
+                            )
+                            token outputs:realitykit:vertex
+                            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1253.5, 540)
+                            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 5
+
+                            over "pasted__file10_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (351, 100.5)
+                            }
+
+                            over "Lookup_st"
+                            {
+                                float2 ui:nodegraph:node:pos = (91.5, 510.5)
+                            }
+
+                            over "pasted__file8_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 279)
+                            }
+
+                            over "pasted__file9_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 540)
+                            }
+
+                            over "pasted__file7_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 801)
+                            }
+
+                            over "robot_realistic_mat_mtlx"
+                            {
+                                float inputs:opacity = 0.5
+                                float2 ui:nodegraph:node:pos = (1001, 540)
+                                int ui:nodegraph:node:stackingOrder = 6
+                            }
+
+                            over "pasted__file10_mtlx_scale"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 100.5)
+                            }
+
+                            over "pasted__file10_mtlx_offset"
+                            {
+                                float2 ui:nodegraph:node:pos = (807.5, 100.5)
+                            }
+
+                            over "pasted__file6_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 1062)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        def "_Robot_1" (
+            customData = {
+                float3 rotationEulerHint = (0, -0.78539807, 0)
+            }
+            references = @Robot.usdz@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (0.92387956, 0, -0.3826834, 0)
+            float3 xformOp:scale = (5, 5, 5)
+            float3 xformOp:translate = (1, 0, 0.5)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "Cameras" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["Camera_1", "Camera_2"]
+        def Xform "Camera_1" (
+            customData = {
+                float3 rotationEulerHint = (0.34906578, 2.3561945, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["DslrCamera", "CameraCoordinate", "Origin", "Axis_X", "Axis_Y", "Axis_Z"]
+            quatf xformOp:orient = (0.37686956, 0.06645226, 0.90984374, -0.16042994)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.9999999)
+            float3 xformOp:translate = (-1, 1.2, 1)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "DslrCamera" (
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+                references = @DslrCamera.usdz@
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (4, 3.9999998, 4)
+                float3 xformOp:translate = (-0.10209203, -0.2056709, -0.39092755)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+}
+
