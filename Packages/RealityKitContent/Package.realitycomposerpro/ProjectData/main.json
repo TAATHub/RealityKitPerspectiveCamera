@@ -5,8 +5,11 @@
     "\/RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Scene.usda" : "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
     "\/RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Untitled Scene.usda" : "D560BB77-AAF3-4BDE-B7C4-989332A4688B",
     "\/RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Untitled%20Scene.usda" : "0D183E49-2C28-4DE9-8FFA-43E1EFD10E0F",
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Drone.usda" : "9F863EDE-BB5A-4958-8013-E42BDF95BB25",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/GridMaterial.usda" : "66168B71-AB05-424E-8B6C-D33D6E61B08F",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Immersive.usda" : "AF09ED6F-1707-48FD-8720-65B998362C09",
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/SampleScene.usda" : "90E9D22D-6E65-4553-BB6B-F519104FFE13",
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/SampleScene_MultiCameras.usda" : "ECB0589B-45CA-43A7-A7F4-8E134E3A2178",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Scene.usda" : "D66134B1-3681-4A8E-AFE5-29F257229F3B",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Untitled Scene.usda" : "94A3AE00-403D-4C8E-BC56-8B8FD99FAEC6",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Untitled%20Scene.usda" : "A7A5E022-00ED-4B1F-9C36-C3AF8528D848"
@@ -14,7 +17,10 @@
   "projectID" : 4444141771826341205,
   "uuidToIntID" : {
     "0D183E49-2C28-4DE9-8FFA-43E1EFD10E0F" : 6419679872753642083,
+    "90E9D22D-6E65-4553-BB6B-F519104FFE13" : 4527248263288697850,
     "94A3AE00-403D-4C8E-BC56-8B8FD99FAEC6" : -9056023702863165400,
-    "D66134B1-3681-4A8E-AFE5-29F257229F3B" : 2715732786347838822
+    "9F863EDE-BB5A-4958-8013-E42BDF95BB25" : 2417230397003898207,
+    "D66134B1-3681-4A8E-AFE5-29F257229F3B" : 2715732786347838822,
+    "ECB0589B-45CA-43A7-A7F4-8E134E3A2178" : -8337667887767162512
   }
 }
