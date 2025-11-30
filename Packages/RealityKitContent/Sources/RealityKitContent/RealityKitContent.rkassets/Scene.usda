@@ -428,15 +428,121 @@ def Xform "Root"
         active = true
     )
     {
-        def "Camera_1" (
+        reorder nameChildren = ["Camera_1", "Camera_1"]
+        def Xform "Camera_1" (
             active = true
-            references = @DslrCamera.usdz@
         )
         {
+            reorder nameChildren = ["Camera", "Origin"]
             quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (4, 4, 4)
-            float3 xformOp:translate = (40, 1, -55)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (40.865, 0, -53.538)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "Camera" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (0, -3.1415918, 0)
+                }
+                references = @DslrCamera.usdz@
+            )
+            {
+                reorder nameChildren = ["Sphere", "geom"]
+                quatf xformOp:orient = (4.371139e-8, 0, 1, 0)
+                float3 xformOp:scale = (4, 4, 4)
+                float3 xformOp:translate = (0.0971756, -0.19893083, 0.3934784)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Sphere "Origin" (
+                active = false
+                prepend apiSchemas = ["MaterialBindingAPI"]
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+            )
+            {
+                rel material:binding = </Root/Cameras/Camera_1/Sphere/DefaultMaterial>
+                double radius = 0.1
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+                quatf xformOp:orient = (1, 0, -1.3234893e-23, 0)
+                float3 xformOp:scale = (0.9999998, 0.99999976, 0.99999976)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:surface.connect = </Root/Cameras/Camera_1/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (1, 1, 1)
+                        float inputs:roughness = 0.75
+                        token outputs:surface
+                    }
+                }
+            }
+        }
+
+        def Xform "Camera_2" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.5235988, -3.1415918, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["Camera", "Origin"]
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (-4.1836736e-7, 1.121012e-7, 0.9659258, 0.25881904)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (1.796225, 7.1202497, -48.539486)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "Camera" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (0, -3.1415918, 0)
+                }
+                references = @DslrCamera.usdz@
+            )
+            {
+                quatf xformOp:orient = (4.371139e-8, 0, 1, 0)
+                float3 xformOp:scale = (4, 4, 4)
+                float3 xformOp:translate = (0.09374059, -0.21291354, 0.4104653)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+
+            def Sphere "Origin" (
+                active = false
+                prepend apiSchemas = ["MaterialBindingAPI"]
+                customData = {
+                    float3 rotationEulerHint = (0, 0, 0)
+                }
+            )
+            {
+                rel material:binding = </Root/Cameras/Camera_2/Sphere/DefaultMaterial>
+                double radius = 0.1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 0.99999994, 0.99999994)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:surface.connect = </Root/Cameras/Camera_2/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (1, 1, 1)
+                        float inputs:roughness = 0.75
+                        token outputs:surface
+                    }
+                }
+            }
         }
     }
 }

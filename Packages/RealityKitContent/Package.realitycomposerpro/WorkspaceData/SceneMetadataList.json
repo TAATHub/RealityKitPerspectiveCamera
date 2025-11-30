@@ -202,29 +202,10 @@
       [
         "90E9D22D-6E65-4553-BB6B-F519104FFE13",
         "Root",
-        "Cameras",
-        "Camera_1"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "90E9D22D-6E65-4553-BB6B-F519104FFE13",
-        "Root",
         "Robot_old",
         "geom",
         "realistic",
         "materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "90E9D22D-6E65-4553-BB6B-F519104FFE13",
-        "Root",
-        "Cameras"
       ],
       {
         "isExpanded" : true,
@@ -401,16 +382,6 @@
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
         "Root",
-        "Cameras",
-        "Camera_1"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root",
         "Crystal",
         "Meshes",
         "Sketchfab_model",
@@ -428,16 +399,6 @@
       {
         "disallowsFraming" : true,
         "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root",
-        "Cameras",
-        "Camera_2"
-      ],
-      {
-        "isExpanded" : true,
         "isLocked" : false
       },
       [
