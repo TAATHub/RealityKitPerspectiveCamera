@@ -11,54 +11,64 @@ struct ContentView: View {
     @State private var count: Int = 0
 
     var body: some View {
-        VStack {
-            Text("Crystal: \(count) / 10")
-            
+        VStack(spacing: 16) {            
             HStack(spacing: 40) {
-                VStack(spacing: 0) {
-                    ControllerButton(imageName: "arrowtriangle.up.fill") {
-                        appModel.controlParameter.forward = $0 ? 1 : 0
-                    }
-                    
-                    HStack(spacing: 0) {
-                        ControllerButton(imageName: "arrowtriangle.left.fill") {
-                            appModel.controlParameter.rotation = $0 ? 1 : 0
-                        }
-                        
-                        Spacer()
-                        
-                        ControllerButton(imageName: "arrowtriangle.right.fill") {
-                            appModel.controlParameter.rotation = $0 ? -1 : 0
-                        }
-                    }
-                    
-                    ControllerButton(imageName: "arrowtriangle.down.fill") {
-                        appModel.controlParameter.forward = $0 ? -1 : 0
-                    }
-                }
-                .frame(width: 192)
+                leftController
+                    .frame(width: 192)
                 
                 OffscreenRenderView()
-                    .aspectRatio(16/9, contentMode: .fit)
                 
-                VStack(spacing: 40) {
-                    ControllerButton(imageName: "arrowtriangle.up.fill") {
-                        appModel.controlParameter.up = $0 ? 1 : 0
-                    }
-                    
-                    ControllerButton(imageName: "arrowtriangle.down.fill") {
-                        appModel.controlParameter.up = $0 ? -1 : 0
-                    }
-                }
-                .frame(width: 192)
+                rightController
+                    .frame(width: 192)
             }
 
             ToggleImmersiveSpaceButton()
-                .padding(.top, 16)
         }
         .padding(40)
         .onChange(of: appModel.crystalCount) { _, newValue in
             count = newValue
+        }
+        .ornament(attachmentAnchor: .scene(.top)) {
+            Text("Crystal: \(count) / 10")
+                .font(.title)
+                .padding(24)
+                .glassBackgroundEffect(in: .rect(cornerRadius: 48))
+        }
+    }
+    
+    private var leftController: some View {
+        VStack(spacing: 0) {
+            ControllerButton(imageName: "arrowtriangle.up.fill") {
+                appModel.controlParameter.forward = $0 ? 1 : 0
+            }
+            
+            HStack(spacing: 0) {
+                ControllerButton(imageName: "arrowtriangle.left.fill") {
+                    appModel.controlParameter.rotation = $0 ? 1 : 0
+                }
+                
+                Spacer()
+                
+                ControllerButton(imageName: "arrowtriangle.right.fill") {
+                    appModel.controlParameter.rotation = $0 ? -1 : 0
+                }
+            }
+            
+            ControllerButton(imageName: "arrowtriangle.down.fill") {
+                appModel.controlParameter.forward = $0 ? -1 : 0
+            }
+        }
+    }
+    
+    private var rightController: some View {
+        VStack(spacing: 40) {
+            ControllerButton(imageName: "arrowtriangle.up.fill") {
+                appModel.controlParameter.up = $0 ? 1 : 0
+            }
+            
+            ControllerButton(imageName: "arrowtriangle.down.fill") {
+                appModel.controlParameter.up = $0 ? -1 : 0
+            }
         }
     }
 }

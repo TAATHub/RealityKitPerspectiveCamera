@@ -1,8 +1,9 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
+    "Scene.usda",
     "Drone.usda",
-    "SampleScene.usda",
+    "SampleScene_SingleCamera.usda",
     "SampleScene_MultiCameras.usda"
   ],
   "recentIdentifiers" : {
@@ -1098,5 +1099,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "SampleScene.usda"
+  "selectedSceneRelativePath" : "Scene.usda"
 }
