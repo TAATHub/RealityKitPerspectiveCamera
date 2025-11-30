@@ -9,7 +9,6 @@ struct ControllerButton: View {
             Image(systemName: imageName)
                 .resizable()
                 .frame(width: 64, height: 64)
-//                .padding(8)
                 .contentShape(Rectangle())
         }
         .buttonStyle(PressedButtonStyle {
