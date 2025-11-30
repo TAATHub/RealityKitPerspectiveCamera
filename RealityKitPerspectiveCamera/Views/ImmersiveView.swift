@@ -13,40 +13,12 @@ struct ImmersiveView: View {
                 if let skybox = Entity.createSkybox(name: "Skybox") {
                     scene.addChild(skybox)
                 }
+
+                await setupRenderTextureScene(scene: scene)
+                setupCameras(scene: scene)
                 
-                let skyCameraEntity = Entity()
-                skyCameraEntity.components.set(SkyCameraComponent())
-                scene.addChild(skyCameraEntity)
-
-                if let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [.init(width: 1600, height: 900), .init(width: 1600, height: 900)]) {
-                    let clonedScene = scene.clone(recursive: true)
-                    
-                    if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
-                        drone.name = "Drone"
-                        drone.position = [0, 1, -2]
-                        drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
-                        if let animation = drone.availableAnimations.last {
-                            drone.playAnimation(animation.repeat())
-                        }
-                        clonedScene.addChild(drone)
-                    }
-                    
-                    renderTextureScene.entities.append(clonedScene)
-                    appModel.renderTextureScene = renderTextureScene
-                }
-
-                if let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) {
-                    drone.name = "Drone"
-                    drone.position = [0, 1, -2]
-                    drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
-                    drone.components.set(DroneControlComponent())
-                    drone.components.set(CollisionComponent(shapes: [.generateBox(size: .init(repeating: 0.5))], mode: .trigger))
-                    
-                    if let animation = drone.availableAnimations.last {
-                        drone.playAnimation(animation.repeat())
-                    }
+                if let drone = await setupDrone() {
                     scene.addChild(drone)
-                    
                     _ = content.subscribe(to: CollisionEvents.Began.self, on: drone, handleCollision(_:))
                 }
                 
@@ -57,6 +29,44 @@ struct ImmersiveView: View {
             
             appModel.crystalCount = 0
         }
+    }
+    
+    private func setupCameras(scene: Entity) {
+        if let camera1 = scene.findEntity(named: "Camera_1") {
+            camera1.components.set(SkyCameraComponent(position: camera1.position))
+        }
+        
+        if let camera2 = scene.findEntity(named: "Camera_2") {
+            appModel.renderCameras[.camera2] = camera2.transform
+        }
+    }
+    
+    private func setupRenderTextureScene(scene: Entity) async {
+        guard let renderTextureScene = try? RenderTextureScene(cameraAndTextures: [RenderCameraType.droneCamera.descriptor,
+                                                                                   RenderCameraType.camera1.descriptor,
+                                                                                   RenderCameraType.camera2.descriptor]) else { return }
+        let clonedScene = scene.clone(recursive: true)
+        
+        if let drone = await setupDrone(withComponents: false) {
+            clonedScene.addChild(drone)
+        }
+        
+        renderTextureScene.entities.append(clonedScene)
+        appModel.renderTextureScene = renderTextureScene
+    }
+    
+    private func setupDrone(withComponents: Bool = true) async -> Entity? {
+        guard let drone = try? await Entity(named: "Drone", in: realityKitContentBundle) else { return nil }
+        drone.name = "Drone"
+        drone.position = [0, 1, -4]
+        drone.orientation = .init(angle: Float.pi, axis: .init(x: 0, y: 1, z: 0))
+        
+        if withComponents {
+            drone.components.set(DroneControlComponent())
+            drone.components.set(CollisionComponent(shapes: [.generateBox(size: .init(repeating: 0.5))], mode: .trigger))
+        }
+        
+        return drone
     }
     
     private func handleCollision(_ event: CollisionEvents.Began)
