@@ -28,8 +28,8 @@ final class DroneControlSystem: System {
             entity.transform.translation += translation.xyz
             
             if let droneCamera = entity.findEntity(named: "DroneCamera") {
-                AppModel.shared.droneCameraTransform.translation = droneCamera.position(relativeTo: nil)
-                AppModel.shared.droneCameraTransform.rotation = entity.transform.rotation.reversed(around: .upward)
+                AppModel.shared.renderCameras[.droneCamera] = Transform(rotation: entity.transform.rotation.reversed(around: .upward),
+                                                                        translation: droneCamera.position(relativeTo: nil))
             }
             updateDroneEntity(translation: entity.transform.translation, rotation: entity.transform.rotation)
         }

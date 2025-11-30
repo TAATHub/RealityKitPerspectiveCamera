@@ -24,14 +24,8 @@ final class RenderTextureSystem: System {
     private func render() {
         guard let renderTextureScene = AppModel.shared.renderTextureScene else { return }
         for (index, camera) in renderTextureScene.cameras.enumerated() {
-            // TODO: Change index to an enum for better readability
-            switch index {
-            case 0:
-                camera.transform = AppModel.shared.droneCameraTransform
-            case 1:
-                camera.transform = AppModel.shared.skyCameraTransform
-            default:
-                break
+            if let type = RenderCameraType(rawValue: index), let renderCamera = AppModel.shared.renderCameras[type] {
+                camera.transform = renderCamera
             }
         }
         
