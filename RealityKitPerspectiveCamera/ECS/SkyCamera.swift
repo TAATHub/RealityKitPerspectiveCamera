@@ -1,7 +1,10 @@
 import RealityKit
 
 struct SkyCameraComponent: Component {
-    init () {
+    var initialPosition: SIMD3<Float>
+    
+    init(position: SIMD3<Float> = .zero) {
+        self.initialPosition = position
         SkyCameraSystem.registerSystem()
     }
 }
@@ -15,7 +18,6 @@ final class SkyCameraSystem: System {
     }
     
     private let radius: Double = 5.0
-    private let centerPosition: SIMD3<Float> = .init(40, 3.0, -55) // TODO: Get position from entity in the scene
     
     init(scene: Scene) {}
     
@@ -24,18 +26,28 @@ final class SkyCameraSystem: System {
         
         let entities = context.entities(matching: query, updatingSystemWhen: .rendering)
         for entity in entities {
-            let x = cos(angle) * radius + Double(centerPosition.x)
-            let y = centerPosition.y
-            let z = sin(angle) * radius + Double(centerPosition.z)
+            guard let component = entity.components[SkyCameraComponent.self] else { continue }
+            
+            let x = cos(angle) * radius + Double(component.initialPosition.x)
+            let y = component.initialPosition.y
+            let z = sin(angle) * radius + Double(component.initialPosition.z)
             entity.transform.translation = .init(Float(x), Float(y), Float(z))
+
+            entity.look(at: component.initialPosition + .init(0, -3, 0), from: entity.transform.translation, relativeTo: nil)
             
-//            let yaw = simd_quatf(angle: -Float(angle), axis: .upward)
-//            let roll = simd_quatf(angle: -.pi/6, axis: .forward)
-//            let pitch = simd_quatf(angle: .pi/6, axis: .right)
-//            entity.transform.rotation = yaw * pitch
-            entity.look(at: centerPosition + .init(0, -3, 0), from: entity.transform.translation, relativeTo: nil)
-            
-            AppModel.shared.skyCameraTransform = entity.transform
+            AppModel.shared.renderCameras[.camera1] = entity.transform
+            updateSkyCameraEntity(name: entity.name, translation: entity.transform.translation, rotation: entity.transform.rotation)
+        }
+    }
+    
+    @MainActor
+    private func updateSkyCameraEntity(name: String, translation: SIMD3<Float>, rotation: simd_quatf) {
+        guard let scene = AppModel.shared.renderTextureScene else { return }
+        for entity in scene.entities {
+            if let skyCamera = entity.findEntity(named: name) {
+                skyCamera.transform.translation = translation
+                skyCamera.transform.rotation = rotation                
+            }
         }
     }
 }
