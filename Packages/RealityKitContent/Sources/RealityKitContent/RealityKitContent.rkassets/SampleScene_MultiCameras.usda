@@ -36,7 +36,7 @@ def Xform "Root"
         def RealityKitComponent "DirectionalLight"
         {
             token info:id = "RealityKit.DirectionalLight"
-            float intensity = 4000
+            float intensity = 8000
 
             def RealityKitStruct "Shadow"
             {
@@ -67,12 +67,12 @@ def Xform "Root"
         reorder nameChildren = ["Camera_1", "Camera_2"]
         def Xform "Camera_1" (
             customData = {
-                float3 rotationEulerHint = (0.34906578, 2.3561945, 0)
+                float3 rotationEulerHint = (0.34906578, 2.4434607, 0)
             }
         )
         {
             reorder nameChildren = ["DslrCamera", "CameraCoordinate", "Origin", "Axis_X", "Axis_Y", "Axis_Z"]
-            quatf xformOp:orient = (0.37686956, 0.06645226, 0.90984374, -0.16042994)
+            quatf xformOp:orient = (0.3368241, 0.059391163, 0.9254166, -0.16317587)
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.9999999)
             float3 xformOp:translate = (-1, 1.2, 1)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
@@ -245,14 +245,14 @@ def Xform "Root"
 
         def Xform "Camera_2" (
             customData = {
-                float3 rotationEulerHint = (0.34906578, -2.3561945, 0)
+                float3 rotationEulerHint = (0.34906578, -2.443461, 0)
             }
         )
         {
             reorder nameChildren = ["DslrCamera", "CameraCoordinate", "Origin", "Axis_X", "Axis_Y", "Axis_Z"]
             float2 ui:nodegraph:node:pos = (3054.7473, 601.66156)
             int ui:nodegraph:node:stackingOrder = 1
-            quatf xformOp:orient = (-0.37686956, -0.06645226, 0.90984374, -0.16042994)
+            quatf xformOp:orient = (-0.3368241, -0.059391163, 0.9254166, -0.16317587)
             float3 xformOp:scale = (0.9999997, 0.9999997, 0.9999996)
             float3 xformOp:translate = (1, 1.2, 1)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]

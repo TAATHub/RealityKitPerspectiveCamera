@@ -46,10 +46,6 @@ struct SampleImmersiveView: View {
     private func setupRendererForSingleCamera(scene: Entity) async throws {
         let clonedScene = scene.clone(recursive: true)
         
-        if let entity = clonedScene.findEntity(named: "_Robot") {
-            entity.removeFromParent()
-        }
-        
         // Setup
         let renderer = try RealityRenderer()
         renderer.entities.append(clonedScene)
@@ -74,7 +70,7 @@ struct SampleImmersiveView: View {
         let textureResource = try await TextureResource(from: texture)
         let renderTextureMaterial = UnlitMaterial(texture: textureResource)
         let entity = ModelEntity(mesh: .generatePlane(width: 1.6, height: 0.9), materials: [renderTextureMaterial])
-        entity.position = [0, 2, 0]
+        entity.position = [0, 1.8, 0]
         scene.addChild(entity)
     }
 

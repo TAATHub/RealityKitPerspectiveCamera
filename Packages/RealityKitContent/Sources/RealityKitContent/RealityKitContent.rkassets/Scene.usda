@@ -68,6 +68,7 @@ def Xform "Root"
             def RealityKitComponent "DirectionalLight"
             {
                 token info:id = "RealityKit.DirectionalLight"
+                float intensity = 2500
 
                 def RealityKitStruct "Shadow"
                 {
@@ -91,6 +92,7 @@ def Xform "Root"
             def RealityKitComponent "DirectionalLight"
             {
                 token info:id = "RealityKit.DirectionalLight"
+                float intensity = 2500
 
                 def RealityKitStruct "Shadow"
                 {
