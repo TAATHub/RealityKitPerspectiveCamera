@@ -4,7 +4,7 @@ A visionOS sample app demonstrating how to render perspective camera views from 
 
 ## Demo
 
-<video src="DroneCrystalQuest_RealityKit_2.mov"></video>
+https://github.com/user-attachments/assets/0f7f3afa-4c99-478a-bc42-94dde1f5b9c0
 
 ## Features
 
