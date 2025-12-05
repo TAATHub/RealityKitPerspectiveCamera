@@ -98,6 +98,16 @@ Custom ECS components and systems handle:
 - [LowLevelTexture - Apple Developer Documentation](https://developer.apple.com/documentation/realitykit/lowleveltexture)
 - [banjun's RealityRenderer gist](https://gist.github.com/banjun/a6276dc0ec0cdf899dda41e55acca41c)
 
+## 3D Assets Credits
+
+This project uses the following 3D assets from Sketchfab, licensed under [CC Attribution](https://creativecommons.org/licenses/by/4.0/):
+
+| Asset | Creator | License |
+|-------|---------|---------|
+| [Diorama / Level Design](https://sketchfab.com/3d-models/diorama-level-design-6ab27cc4a57946a790e0df33169d2e02) | romane_bouverot | CC Attribution |
+| [04_DOOM_drone (detail)](https://sketchfab.com/3d-models/04-doom-drone-detail-a271ba2083274510bef80a236a501361) | gleb_tihon | CC Attribution |
+| [Crystals](https://sketchfab.com/3d-models/crystals-0499073f160248adb451bf4135e5f50a) | PolyToots | CC Attribution |
+
 ## License
 
 This project is available for educational and reference purposes.
